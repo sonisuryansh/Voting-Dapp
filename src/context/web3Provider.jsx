@@ -1,19 +1,34 @@
-import Web3Context, {Web3context} from './web3Context.jsx';
-const Web3Provider = ()=>{
+import { useState } from "react";
+import Web3Context from "./web3Context.jsx";
+import { getWeb3State } from "../utils/getWeb3State.jsx";
 
-    cosnt [web3State,setweb3State] = useState({
-        contractInstance:null,
-        selectedAccount:null,
-        chainId:null
-    });
+// 
+const Web3Provider = ({ children }) => {
+  const [web3State, setWeb3State] = useState({
+    contractInstance: null,
+    selectedAccount: null,
+    chainId: null
+  });
 
-    return (
-        <>
-            <Web3Context.Provider value={web3State}>
-                
-            </Web3Context.Provider>
-            <button>Connect Wallet</button>
-        </>
-    )
+ // 
+  const handleWallet = async()=>{
+    try{
+        const {contractInstance, selectedAccount, chainId } = await getWeb3State();
+        setWeb3State({contractInstance, selectedAccount, chainId});
+    }catch(error){
+        console.log(error);
+    }  
+  }
 
-}
+
+  return (
+    <Web3Context.Provider value={{ web3State, setWeb3State }}>
+      {children}
+      <button onClick={handleWallet}>Connect Wallet</button>
+    </Web3Context.Provider>
+  );
+
+  
+};
+
+export default Web3Provider;
