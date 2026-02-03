@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import Web3Context from "./web3Context.jsx";
 import { getWeb3State } from "../utils/getWeb3State.jsx";
-
+import handleAccountChange from "../utils/handleAccountChange.jsx";
+import handleChainChange from "../utils/handleChainChange.jsx";
 // 
 const Web3Provider = ({ children }) => {
   const [web3State, setWeb3State] = useState({
@@ -19,7 +21,10 @@ const Web3Provider = ({ children }) => {
         console.log(error);
     }  
   }
-
+  useEffect(()=>{
+    window.ethereum.on('accountsChanged',()=>handleAccountChange(setWeb3State));
+     window.ethereum.on('chainChanged',()=>handleChainChange(setWeb3State));
+  })
 
   return (
     <Web3Context.Provider value={{ web3State, setWeb3State }}>
