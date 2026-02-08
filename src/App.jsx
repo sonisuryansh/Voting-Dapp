@@ -1,18 +1,17 @@
-import "./App.css";
-import Dummy from "./Dummy.jsx";
+
 import Web3Provider from "./context/web3Provider.jsx";
 import RegisterCandidate from "./pages/Candidate/RegisterCandidate.jsx";
 import RegisterVoter from "./pages/Voter/RegisterVoter.jsx";
+import { routes } from "./routes/routes.jsx";
+import { RouterProvider } from "react-router-dom";
+import "./App.css";
+
 
 function App() {
   return (
+       
     <Web3Provider>
-      {/* <Dummy /> */}
-      {/* <RegisterCandidate></RegisterCandidate> */}
-      <RegisterVoter></RegisterVoter>
-
-      // 35.05
-      
+      <RouterProvider router ={routes}></RouterProvider>
     </Web3Provider>
   );
 }
