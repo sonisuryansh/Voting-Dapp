@@ -39,7 +39,7 @@ export const getWeb3State = async () => {
     );
 
     console.log("JWT Token:", res.data.token);
-    // localStorage.setItem("token", res.data.token);
+    localStorage.setItem("token", res.data.token);
 
     // Create contract instance
     const contractInstance = new ethers.Contract(contractAddress, abi, signer);
