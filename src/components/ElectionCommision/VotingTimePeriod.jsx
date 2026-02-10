@@ -2,7 +2,8 @@ import {useRef} from "react";
 import {useWeb3Context} from "../../context/useWeb3Context";
 
 const VotingTimePeriod =() =>{
-    const {contractInstance} = useWeb3Context();
+    const {web3State} = useWeb3Context();
+    const {contractInstance} = web3State;
     const stratRef = useRef(null);
     const endRef = useRef(null);
     const handleVotingTime = async(e)=>{

@@ -16,7 +16,6 @@ import Navigation from "../components/Navigation/Navigation.jsx";
 export const routes = createBrowserRouter([
     {path:'/',element:(
     <div>
-        <Navigation></Navigation>
         <Wallet/>
     </div>
     )},

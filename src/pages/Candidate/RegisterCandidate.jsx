@@ -2,7 +2,9 @@ import { useRef } from "react";
 import { useWeb3Context } from "../../context/useWeb3Context";
 
 const RegisterCandidate = ()=>{
-    const {contractInstance} = useWeb3Context();
+    const {web3State} = useWeb3Context();
+    const {contractInstance} = web3State;
+    
     const nameRef = useRef(null);
     const ageRef = useRef(null);
     const genderRef = useRef(null);
@@ -17,8 +19,8 @@ const RegisterCandidate = ()=>{
             const party = partyRef.current.value;
             
             console.log(name , age, gender, party);
-            // await contractInstance.registerCandidate(name ,party , age, gender);
-            // console.log("Registration is Successful");
+            await contractInstance.registerCandidate(name ,party , age, gender);
+            console.log("Registration is Successful");
         }catch(error){
             console.log(error);
         }

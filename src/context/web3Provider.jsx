@@ -32,9 +32,9 @@ const Web3Provider = ({ children }) => {
   })
 
   return (
-    <Web3Context.Provider value={{ web3State, setWeb3State }}>
+    <Web3Context.Provider value={{ web3State, setWeb3State , handleWallet}}>
       {children}
-      <button onClick={handleWallet}>Connect Wallet</button>
+      
     </Web3Context.Provider>
   );
 
