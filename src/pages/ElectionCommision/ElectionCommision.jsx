@@ -1,94 +1,47 @@
-import { Landmark, Clock, Trophy, AlertOctagon, BarChart3, Activity } from "lucide-react";
 import VotingTimePeriod from "../../components/ElectionCommision/VotingTimePeriod";
+import VotingStatus from "../../components/ElectionCommision/VotingStatus";
 import AnnounceWinner from "../../components/ElectionCommision/AnnounceWinner";
 import EmergencyDeclare from "../../components/ElectionCommision/EmergencyDeclare";
 import DisplayResult from "../../components/ElectionCommision/DisplayResult";
-import VotingStatus from "../../components/ElectionCommision/VotingStatus";
 
 const ElectionCommision = () => {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
+    <div>
       {/* Page Header */}
-      <div className="mb-10">
+      <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-            <Landmark className="h-5 w-5 text-primary" />
+          <div className="w-8 h-8 bg-accent rounded-md flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent-foreground" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="9" y1="21" x2="9" y2="9" />
+            </svg>
           </div>
-          <h2 className="text-2xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">
             Election Commission Dashboard
-          </h2>
+          </h1>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Administrative controls for managing the election. Only the election commissioner wallet can execute these actions.
+          Administrative controls for managing the election lifecycle. Only authorized commissioners can execute these actions.
         </p>
       </div>
 
-      {/* Status Bar */}
-      <div className="mb-8 rounded-xl border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Activity className="h-5 w-5 text-primary" />
-          <h3 className="text-base font-semibold text-card-foreground">Election Status</h3>
-        </div>
-        <VotingStatus />
-      </div>
-
       {/* Dashboard Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Set Voting Period */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
-              <Clock className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-card-foreground">Voting Period</h3>
-              <p className="text-xs text-muted-foreground">Set start and end times for voting</p>
-            </div>
-          </div>
-          <VotingTimePeriod />
-        </div>
-
-        {/* Announce Winner */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/10">
-              <Trophy className="h-5 w-5 text-accent" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-card-foreground">Announce Winner</h3>
-              <p className="text-xs text-muted-foreground">Declare the election results</p>
-            </div>
-          </div>
-          <AnnounceWinner />
-        </div>
-
-        {/* Display Results */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-success/10">
-              <BarChart3 className="h-5 w-5 text-success" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-card-foreground">Election Results</h3>
-              <p className="text-xs text-muted-foreground">View the current winner</p>
-            </div>
-          </div>
-          <DisplayResult />
-        </div>
-
-        {/* Emergency Stop */}
-        <div className="rounded-xl border border-destructive/30 bg-card p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10">
-              <AlertOctagon className="h-5 w-5 text-destructive" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-card-foreground">Emergency Controls</h3>
-              <p className="text-xs text-muted-foreground">Halt voting in case of emergency</p>
-            </div>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <VotingTimePeriod />
+        <VotingStatus />
+        <AnnounceWinner />
+        <DisplayResult />
+        <div className="md:col-span-2">
           <EmergencyDeclare />
         </div>
+      </div>
+
+      {/* Admin Notice */}
+      <div className="mt-8 bg-secondary rounded-md p-4 border-l-4 border-accent">
+        <p className="text-xs text-secondary-foreground leading-relaxed">
+          <strong>Commissioner Notice:</strong> All actions performed on this dashboard are recorded on the blockchain and are publicly auditable. Exercise caution when executing administrative operations.
+        </p>
       </div>
     </div>
   );

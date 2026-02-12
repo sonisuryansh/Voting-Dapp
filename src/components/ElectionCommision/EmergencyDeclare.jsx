@@ -1,44 +1,36 @@
 import { useState } from "react";
 import { useWeb3Context } from "../../context/useWeb3Context";
-import { Loader2, AlertOctagon } from "lucide-react";
 
 const EmergencyDeclare = () => {
+  const [loading, setLoading] = useState(false);
   const { web3State } = useWeb3Context();
   const { contractInstance } = web3State;
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const emergencyStop = async () => {
-    setIsSubmitting(true);
+    setLoading(true);
     try {
       await contractInstance.emergencyStopVoting();
     } catch (error) {
       console.error(error);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground leading-relaxed">
-        This action will immediately halt all voting activities. Use only in case of a critical emergency. This action is irreversible.
+    <div className="bg-card rounded-lg border border-destructive/30 p-6">
+      <h3 className="text-base font-semibold text-destructive mb-1">
+        Emergency Stop
+      </h3>
+      <p className="text-xs text-muted-foreground mb-4">
+        Immediately halt all voting operations. This action cannot be undone.
       </p>
       <button
         onClick={emergencyStop}
-        disabled={isSubmitting}
-        className="flex items-center justify-center gap-2 rounded-lg bg-destructive px-5 py-2.5 text-sm font-semibold text-destructive-foreground shadow-sm transition-all hover:bg-destructive/90 focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer border-none"
+        disabled={loading}
+        className="w-full bg-destructive text-destructive-foreground font-semibold py-2.5 px-4 rounded-md hover:bg-destructive/90 transition-colors focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 disabled:opacity-50 cursor-pointer text-sm"
       >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Stopping...
-          </>
-        ) : (
-          <>
-            <AlertOctagon className="h-4 w-4" />
-            Emergency Stop Voting
-          </>
-        )}
+        {loading ? "Stopping..." : "Stop Voting Immediately"}
       </button>
     </div>
   );

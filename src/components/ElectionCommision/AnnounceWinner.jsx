@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { useWeb3Context } from "../../context/useWeb3Context";
-import { Loader2, Trophy } from "lucide-react";
 
 const AnnounceWinner = () => {
   const [winner, setWinner] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { web3State } = useWeb3Context();
   const { contractInstance } = web3State;
 
   const getWinner = async () => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const result = await contractInstance.announceVotingResult();
       console.log(result);
@@ -17,32 +16,28 @@ const AnnounceWinner = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="bg-card rounded-lg border border-border p-6">
+      <h3 className="text-base font-semibold text-card-foreground mb-1">
+        Announce Winner
+      </h3>
+      <p className="text-xs text-muted-foreground mb-4">
+        Finalize the election and announce the winning candidate.
+      </p>
       <button
         onClick={getWinner}
-        disabled={isLoading}
-        className="flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-sm transition-all hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer border-none"
+        disabled={loading}
+        className="w-full bg-accent text-accent-foreground font-semibold py-2.5 px-4 rounded-md hover:bg-accent/90 transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 disabled:opacity-50 cursor-pointer text-sm"
       >
-        {isLoading ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Processing...
-          </>
-        ) : (
-          <>
-            <Trophy className="h-4 w-4" />
-            Announce Winner
-          </>
-        )}
+        {loading ? "Processing..." : "Announce Winner"}
       </button>
       {winner && (
-        <div className="rounded-lg bg-accent/10 border border-accent/20 px-4 py-3">
-          <p className="text-sm font-medium text-accent">
+        <div className="mt-4 bg-success/10 border border-success/20 rounded-md px-4 py-3">
+          <p className="text-sm font-medium text-success">
             Winner: {String(winner)}
           </p>
         </div>

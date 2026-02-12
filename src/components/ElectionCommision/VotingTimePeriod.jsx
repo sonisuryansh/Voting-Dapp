@@ -1,74 +1,70 @@
 import { useRef, useState } from "react";
 import { useWeb3Context } from "../../context/useWeb3Context";
-import { Loader2 } from "lucide-react";
 
 const VotingTimePeriod = () => {
   const { web3State } = useWeb3Context();
   const { contractInstance } = web3State;
+  const [loading, setLoading] = useState(false);
   const startRef = useRef(null);
   const endRef = useRef(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleVotingTime = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      e.preventDefault();
-      setIsSubmitting(true);
       const startTime = startRef.current.value;
       const endTime = endRef.current.value;
-
       console.log(startTime, endTime);
-      // await contractInstance.setVotingPeriod(startTime, endTime);
-      // console.log("Voter Time is set successful");
+      // await contractInstance.setVotingPeriod(startTime, endTime)
     } catch (error) {
       console.error(error);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleVotingTime} className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="bg-card rounded-lg border border-border p-6">
+      <h3 className="text-base font-semibold text-card-foreground mb-1">
+        Set Voting Period
+      </h3>
+      <p className="text-xs text-muted-foreground mb-4">
+        Define the start and end dates for the voting window.
+      </p>
+      <form onSubmit={handleVotingTime} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="start-time" className="text-sm font-medium text-card-foreground">
+          <label htmlFor="voting-start" className="text-sm font-medium text-card-foreground">
             Start Date
           </label>
           <input
-            id="start-time"
+            id="voting-start"
             type="date"
             ref={startRef}
             required
-            className="rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-shadow"
+            className="w-full px-3 py-2.5 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="end-time" className="text-sm font-medium text-card-foreground">
+          <label htmlFor="voting-end" className="text-sm font-medium text-card-foreground">
             End Date
           </label>
           <input
-            id="end-time"
+            id="voting-end"
             type="date"
             ref={endRef}
             required
-            className="rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-shadow"
+            className="w-full px-3 py-2.5 rounded-md border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
           />
         </div>
-      </div>
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer border-none"
-      >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Setting Period...
-          </>
-        ) : (
-          "Set Voting Period"
-        )}
-      </button>
-    </form>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-primary text-primary-foreground font-semibold py-2.5 px-4 rounded-md hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 cursor-pointer text-sm"
+        >
+          {loading ? "Setting..." : "Set Voting Period"}
+        </button>
+      </form>
+    </div>
   );
 };
 
