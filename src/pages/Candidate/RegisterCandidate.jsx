@@ -1,54 +1,84 @@
-import { useRef } from "react";
-import { useWeb3Context } from "../../context/useWeb3Context";
+// RegisterCandidate.js
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
+import { useWeb3Context } from "../../context/useWeb3Context.jsx";
+import { uploadCandidateImage } from "../../utils/uploadCandidateImage.jsx"; // Correct spelling
+import "./RegisterCandidate.css"
 
-const RegisterCandidate = ()=>{
-    const {web3State} = useWeb3Context();
-    const {contractInstance} = web3State;
-    
-    const nameRef = useRef(null);
-    const ageRef = useRef(null);
-    const genderRef = useRef(null);
-    const partyRef = useRef(null);
-
-    const handleCandidateRegistration = async(e)=>{
-        try{
-            e.preventDefault();
-            const name = nameRef.current.value;
-            const age = ageRef.current.value;
-            const gender = genderRef.current.value;
-            const party = partyRef.current.value;
-            
-            console.log(name , age, gender, party);
-            await contractInstance.registerCandidate(name ,party , age, gender);
-            console.log("Registration is Successful");
-        }catch(error){
-            console.log(error);
-        }
+const RegisterCandidate = () => {
+  const token = localStorage.getItem("token");
+  const navigateTo = useNavigate();
+  
+  useEffect(() => {
+    if (!token) {
+      navigateTo("/");
     }
- return (
-    <>
-    <form onSubmit={handleCandidateRegistration}>
-            <label>
-                Name: 
-                <input type="text" ref={nameRef}></input>
-            </label>
-            <label>
-                Age: 
-                <input type="text" ref={ageRef}></input>
-            </label>
-            <label>
-                Gender: 
-                <input type="text" ref={genderRef}></input>
-            </label>
-            <label>
-                Party: 
-                <input type="text" ref={partyRef}></input>
-            </label>
-            <button type="submit" >Register</button>
-    </form>
+  }, [navigateTo, token]);
+
+  const [file, setFile] = useState(null);
+  const { web3State } = useWeb3Context();
+  const { contractInstance } = web3State;
+  const nameRef = useRef(null);
+  const genderRef = useRef(null);
+  const partyRef = useRef(null);
+  const ageRef = useRef(null);
+
+  const handleCandidateRegistration = async (e) => {
+    e.preventDefault();
+    try {
+      const name = nameRef.current.value;
+      const age = ageRef.current.value;
+      const gender = genderRef.current.value;
+      const party = partyRef.current.value;
+
+      if (!contractInstance) {
+        throw new Error("Contract instance not found!");
+      }
+
+      const imageUploadStatus = await uploadCandidateImage(file);
+      if (imageUploadStatus === true) {
+        await contractInstance.registerCandidate(name, party, age, gender);
+        // Clear the form after successful registration
+        nameRef.current.value = "";
+        ageRef.current.value = "";
+        genderRef.current.value = "";
+        partyRef.current.value = "";
+        alert("Registration Successful")
+        setFile(null);
+      } else {
+        throw new Error("Candidate Registration Failed!");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Registration Failed")
+    }
+  };
+
+  return (
+    <div>
+      <br></br>
+      <form onSubmit={handleCandidateRegistration}>
+        <label>Candidate Name:</label>
+          <input type="text" ref={nameRef} required />
+        <label>Candidate Age:</label>
+          <input type="text" ref={ageRef} required />
+        <label>Gender:</label>
+          <input type="text" ref={genderRef} required />
+        <label>Candidate Party:</label>
+          <input type="text" ref={partyRef} required />
+        <br></br>
+        <button type="submit">Register</button>
+      </form>
+      <br></br>
+      <input 
+        type="file" 
+        accept="image/*"
+        onChange={(e) => setFile(e.target.files[0])} 
+        required
+      />
+   </div>
     
-    </>
- )
-}
+  );
+};
 
 export default RegisterCandidate;

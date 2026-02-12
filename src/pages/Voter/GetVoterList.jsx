@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useWeb3Context } from "../../context/useWeb3Context";
 
 const GetVoterList =  ()=>{
-  const {web3State} = useWeb3Context();
+  const {web3State} = useWeb3Context()
   const {contractInstance} = web3State;
   
   useEffect(()=>{
@@ -16,12 +16,7 @@ const GetVoterList =  ()=>{
     }
     contractInstance && fetchVoterList()
   },[contractInstance])
-  return(
-    <>
-
-    </>      
-    )
+  return(<>
+  </>)
 }
-
-
 export default GetVoterList;
