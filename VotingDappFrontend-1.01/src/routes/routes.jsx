@@ -5,6 +5,7 @@ import RegisterCandidate from "../pages/Candidate/RegisterCandidate";
 import RegisterVoter from "../pages/Voter/RegisterVoter";
 import ElectionCommision from "../pages/ElectionCommision/ElectionCommision";
 import Wallet from "../components/Wallet/Wallet";
+import TokenExchange from "../pages/TokenMarketPlace.jsx/TokenMarketPlace"
 import Layout from "../components/Layout/Layout";
 
 export const routes = createBrowserRouter([
@@ -56,4 +57,12 @@ export const routes = createBrowserRouter([
       </Layout>
     ),
   },
+  {
+    path: "token-marketplace",
+    element:(
+      <Layout>
+        <TokenExchange/>
+      </Layout>
+    )
+  }
 ]);

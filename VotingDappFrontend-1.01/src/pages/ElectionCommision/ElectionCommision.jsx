@@ -3,8 +3,18 @@ import VotingStatus from "../../components/ElectionCommision/VotingStatus";
 import AnnounceWinner from "../../components/ElectionCommision/AnnounceWinner";
 import EmergencyDeclare from "../../components/ElectionCommision/EmergencyDeclare";
 import DisplayResult from "../../components/ElectionCommision/DisplayResult";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {toast} from "react-hot-toast";
 
 const ElectionCommision = () => {
+   const token = localStorage.getItem("token")
+    const navigateTo = useNavigate()
+    useEffect(()=>{
+      if(!token){
+        navigateTo("/")
+      }
+    },[navigateTo,token])
   return (
     <div>
       {/* Page Header */}
@@ -43,6 +53,15 @@ const ElectionCommision = () => {
           <strong>Commissioner Notice:</strong> All actions performed on this dashboard are recorded on the blockchain and are publicly auditable. Exercise caution when executing administrative operations.
         </p>
       </div>
+       <VotingStatus/>
+     <br></br>
+     <DisplayResult/>
+     <br></br>
+     <VotingTimePeriod/> 
+     <br></br>
+     <AnnounceWinner/>
+     <br></br>
+     <EmergencyDeclare/>
     </div>
   );
 };
